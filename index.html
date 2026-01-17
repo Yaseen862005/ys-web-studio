@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =========================
+    YS Web Studio - Single Page Portfolio
+    File: index.html
+    Author: You 🙂
+  ========================== -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YS Web Studio — Premium Websites</title>
+
+  <!-- SEO basics -->
+  <meta name="description" content="YS Web Studio builds premium, fast, conversion-focused websites. Explore featured projects and contact to start your next site." />
+  <meta name="theme-color" content="#070A12" />
+
+  <!-- Premium fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- =========================
+    BACKGROUND (glow + grid)
+    - Purely visual layer, fixed behind everything
+  ========================== -->
+  <div class="bg" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="grid"></div>
+  </div>
+
+  <!-- =========================
+    HEADER / NAV
+  ========================== -->
+  <header class="header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="YS Web Studio home">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="brand-name">YS WEB STUDIO</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="links" aria-label="Primary">
+        <!-- Add class="nav-link" so JS can highlight active section -->
+        <a class="nav-link" href="#work">Work</a>
+        <a class="nav-link" href="#process">Process</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+        <a class="nav-link btn small" href="#contact">Contact</a>
+      </nav>
+
+            <div class="nav-actions">
+        <!-- Background music toggle (autoplay is blocked until user interaction) -->
+        <button class="audio-toggle btn ghost small" id="audioBtn" type="button" aria-pressed="false">
+          Music
+        </button>
+
+        <button class="menu" id="menuBtn" aria-label="Open menu" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile nav panel (hidden by default) -->
+    <div class="mobile-nav" id="mobileNav" aria-label="Mobile">
+      <a class="nav-link" href="#work">Work</a>
+      <a class="nav-link" href="#process">Process</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="#faq">FAQ</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- =========================
+      HERO
+      - Sell yourself fast: who you are + what you do + CTA
+    ========================== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="pill">
+            <span class="pill-dot" aria-hidden="true"></span>
+            Premium websites for real clients
+          </div>
+
+          <h1>
+            Premium websites<br>
+            that feel expensive.
+            <span class="grad">Fast. Clean. Conversion-ready.</span>
+          </h1>
+
+          <p class="sub">
+            I design and build modern websites for businesses: premium UI,
+            performance-first engineering, and smooth motion that sells.
+          </p>
+
+          <div class="cta">
+            <!-- TODO: replace WhatsApp number in href -->
+            <a class="btn magnetic" id="heroWaBtn" href="https://wa.me/962786365888" target="_blank" rel="noopener">WhatsApp Me</a>
+            <a class="btn ghost magnetic" href="#work">See Projects</a>
+          </div>
+
+          <!-- KPIs (optional but powerful for trust) -->
+          <div class="trust">
+            <!-- NOTE: class="count" + data-count triggers counter animation -->
+            <div class="trust-item">
+              <div class="kpi count" data-count="48">+48%</div>
+              <div class="kpi-label">avg. speed & clarity uplift</div>
+            </div>
+            <div class="trust-item">
+              <div class="kpi">3–10 days</div>
+              <div class="kpi-label">typical delivery</div>
+            </div>
+            <div class="trust-item">
+              <div class="kpi count" data-count="98">98</div>
+              <div class="kpi-label">Lighthouse mindset</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <!-- Animated morphing shapes blob - represents adaptability -->
+          <div class="glass-card reveal">
+            <div class="blob-container">
+              <svg class="blob-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color: #7C3AED; stop-opacity: 1" />
+                    <stop offset="50%" style="stop-color: #06B6D4; stop-opacity: 1" />
+                    <stop offset="100%" style="stop-color: #22C55E; stop-opacity: 1" />
+                  </linearGradient>
+                </defs>
+                <path class="blob-path" d="M150 40 C215 40 260 95 260 150 C260 205 215 260 150 260 C95 260 40 205 40 150 C40 95 95 40 150 40 Z" fill="url(#blobGradient)" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="floating-note reveal">
+            <div class="note-title">What you get</div>
+            <div class="note-list">
+              <span>• Sites shaped exactly to what you imagined</span>
+              <span>• I turn “impossible” into possible—fluid like water</span>
+              <span>• Any style or palette—always responsive, clean, fast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true">SCROLL</div>
+    </section>
+
+    <!-- =========================
+      WORK / PORTFOLIO
+      - Cards are generated from JS (easier to update later)
+    ========================== -->
+    <section class="section" id="work">
+      <div class="container">
+        <div class="section-head">
+          <h2>Featured Work</h2>
+          <p>Click any card to open the live project (new tab).</p>
+        </div>
+
+        <!-- Filters (JS uses data-level to filter) -->
+        <div class="filters">
+          <button class="filter active" data-filter="all" type="button">All</button>
+          <button class="filter" data-filter="basic" type="button">Basic</button>
+          <button class="filter" data-filter="excellent" type="button">Excellent</button>
+          <button class="filter" data-filter="legendary" type="button">Legendary</button>
+        </div>
+
+        <!-- Projects inserted here by script.js -->
+        <div class="work-grid" id="workGrid" aria-live="polite"></div>
+
+        <div class="work-note reveal">
+          Want a project like these? I’ll match your brand and deliver a premium result fast.
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+      PROCESS
+      - Makes you feel "professional" + reduces buyer uncertainty
+    ========================== -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head">
+          <h2>My Process</h2>
+          <p>Clear steps. Clear timeline. Clean delivery.</p>
+        </div>
+
+        <div class="process-grid">
+          <article class="step reveal">
+            <div class="step-num">01</div>
+            <h3>Scope</h3>
+            <p>We define your goal (leads/sales/branding) and page structure.</p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">02</div>
+            <h3>Design</h3>
+            <p>Any aesthetic you want—light, dark, minimal, bold—with typography and components tuned to your brand.</p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">03</div>
+            <h3>Build</h3>
+            <p>Fast, responsive, clean code. Performance and SEO basics included.</p>
+          </article>
+
+          <article class="step reveal">
+            <div class="step-num">04</div>
+            <h3>Launch</h3>
+            <p>Final QA + deployment guidance. Optional maintenance if needed.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+      PRICING
+      - Keeps it simple; you can adjust later
+    ========================== -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <h2>Pricing</h2>
+          <p>Simple packages. Clear outcomes. Premium execution.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="price-card reveal">
+            <div class="price-top">
+              <div class="plan">Starter</div>
+              <div class="badge">For new brands</div>
+            </div>
+            <div class="price">
+              <span class="from">From</span>
+              <span class="amount">$299</span>
+              <span class="per">one-time</span>
+            </div>
+            <ul class="features">
+              <li>1-page landing</li>
+              <li>Responsive + SEO basics</li>
+              <li>WhatsApp + email contact</li>
+              <li>Delivery: 3–5 days</li>
+            </ul>
+            <a class="btn ghost full magnetic" href="#contact">Get Starter</a>
+          </article>
+
+          <article class="price-card popular reveal">
+            <div class="popular-tag">Most Popular</div>
+            <div class="price-top">
+              <div class="plan">Pro</div>
+              <div class="badge">Best for growth</div>
+            </div>
+            <div class="price">
+              <span class="from">From</span>
+              <span class="amount">$599</span>
+              <span class="per">one-time</span>
+            </div>
+            <ul class="features">
+              <li>Multi-section site + motion</li>
+              <li>Portfolio + FAQ</li>
+              <li>Performance optimization</li>
+              <li>Delivery: 7–10 days</li>
+            </ul>
+            <a class="btn full magnetic" href="#contact">Get Pro</a>
+          </article>
+
+          <article class="price-card reveal">
+            <div class="price-top">
+              <div class="plan">Business</div>
+              <div class="badge">Custom build</div>
+            </div>
+            <div class="price">
+              <span class="from">From</span>
+              <span class="amount">$999</span>
+              <span class="per">starting</span>
+            </div>
+            <ul class="features">
+              <li>Website + brand consistency</li>
+              <li>Custom sections & components</li>
+              <li>Integrations (forms / analytics)</li>
+              <li>Delivery: 2–4 weeks</li>
+            </ul>
+            <a class="btn ghost full magnetic" href="#contact">Talk to Me</a>
+          </article>
+        </div>
+
+        <div class="pricing-note reveal">
+          Need something specific? I can tailor scope, timeline, and budget.
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+      FAQ
+      - Handles objections and increases conversions
+    ========================== -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <h2>FAQ</h2>
+          <p>Quick answers before you buy.</p>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-left reveal">
+            <div class="faq-intro">
+              <h3>Let’s keep it simple.</h3>
+              <p>
+                Clear scope, clear timeline, and fast delivery. If you’re unsure,
+                start with Pro — then scale.
+              </p>
+              <a class="btn ghost magnetic" href="#contact">Ask a question</a>
+            </div>
+          </div>
+
+          <div class="faq-right reveal">
+            <div class="faq">
+              <button class="faq-q" aria-expanded="false" type="button">
+                <span>How fast can you deliver?</span>
+                <span class="faq-ico">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Most projects ship in 3–10 days depending on scope. Bigger builds take 2–4 weeks.</p>
+              </div>
+            </div>
+
+            <div class="faq">
+              <button class="faq-q" aria-expanded="false" type="button">
+                <span>What do you need from me to start?</span>
+                <span class="faq-ico">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Your goal, a short description, and any references you like. If you don’t have assets, I can help.</p>
+              </div>
+            </div>
+
+            <div class="faq">
+              <button class="faq-q" aria-expanded="false" type="button">
+                <span>Do you do revisions?</span>
+                <span class="faq-ico">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Yes. Every package includes revisions. We iterate fast and keep changes focused on results.</p>
+              </div>
+            </div>
+
+            <div class="faq">
+              <button class="faq-q" aria-expanded="false" type="button">
+                <span>Will my site be fast?</span>
+                <span class="faq-ico">+</span>
+              </button>
+              <div class="faq-a">
+                <p>Speed is a requirement. Clean layout, optimized assets, and proper loading order are standard.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+      CONTACT
+      - Primary conversion section
+    ========================== -->
+    <section class="section contact" id="contact">
+      <div class="container contact-card reveal">
+        <h2>Let’s build your website.</h2>
+        <p>Send details. I’ll reply with a plan + timeline.</p>
+        <div class="contact-guarantee">Zero-risk, clear results: fixed scope, clear timeline. If anything feels off, I fix it—no friction.</div>
+
+        <!-- Email form (mailto) -->
+        <!-- NOTE: This is client-side only. For real form handling, you can connect a backend later. -->
+                <form class="form" id="contactForm" novalidate>
+          <!-- Basic inputs -->
+          <input id="name" type="text" placeholder="Your name" />
+          <input id="email" type="email" placeholder="Email (optional)" />
+          <input id="project" type="text" placeholder="Project type (business/portfolio/store)" />
+
+          <!-- Submit -->
+          <button class="btn magnetic" type="submit" id="sendBtn">Send</button>
+        </form>
+
+        <!-- Contact method selector -->
+        <!-- These buttons only choose the method. The Send button executes the action. -->
+        <div class="contact-actions" aria-label="Choose contact method">
+          <button
+            class="btn ghost small magnetic contact-method active"
+            type="button"
+            data-method="whatsapp"
+            aria-pressed="true"
+          >
+            WhatsApp
+          </button>
+
+          <button
+            class="btn ghost small magnetic contact-method"
+            type="button"
+            data-method="email"
+            aria-pressed="false"
+          >
+            Email
+          </button>
+
+          <!-- JS reads this value on submit -->
+          <input type="hidden" id="contactMethod" value="whatsapp" />
+        </div>
+
+        <div class="fineprint">No spam. Just clean proposals.</div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container foot">
+        <div>© <span id="year"></span> YS Web Studio</div>
+        <div class="foot-links">
+          <a href="#work">Work</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Floating WhatsApp button -->
+  <!-- TODO: replace WhatsApp number -->
+  <a class="wa-float" href="https://wa.me/962786365888" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    WhatsApp
+  </a>
+
+    <!-- Background music
+       1) Put your mp3 here: /assets/bg-music.mp3 (create folder assets)
+       2) Or change src to your file name -->
+  <audio id="bgAudio" src="assets/bg-music.mp3" preload="none" loop></audio>
+
+
+    <!-- Toast notification (must be BEFORE script.js so JS can find it) -->
+  <div id="toast" class="toast" aria-live="polite" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+
+
+</body>
+</html>
