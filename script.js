@@ -73,49 +73,49 @@ document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 const projects = [
   {
     company: "NovaCommerce",
-    goal: "Premium eCommerce landing for product launches.",
+    goal: "Launch-ready ecommerce page built to move product on day one.",
     level: "excellent",
-    tags: ["Landing", "Speed", "UI"],
+    tags: ["Conversion", "Speed", "UI"],
     url: "https://example.com", // TODO: replace with your real link
     thumb: "thumb-a"
   },
   {
     company: "Pulse Analytics",
-    goal: "Modern company site for a data platform.",
+    goal: "Flagship site translating a complex data platform into a clear invitation to engage.",
     level: "legendary",
-    tags: ["Brand", "Motion", "Conversion"],
+    tags: ["Positioning", "Conversion", "Motion"],
     url: "https://example.com", // TODO
     thumb: "thumb-b"
   },
   {
     company: "Helio Studio",
-    goal: "Portfolio site for a creative team.",
+    goal: "Portfolio that frames the studio's craft and guides visitors to inquire.",
     level: "basic",
-    tags: ["Portfolio", "Clean", "Mobile"],
+    tags: ["Portfolio", "Editorial", "Mobile"],
     url: "https://example.com", // TODO
     thumb: "thumb-c"
   },
   {
     company: "Apex Dental",
-    goal: "Clinic website designed for bookings & trust.",
+    goal: "Clinic site engineered to earn trust and drive bookings.",
     level: "excellent",
-    tags: ["Business", "SEO", "Forms"],
+    tags: ["Bookings", "Trust", "SEO"],
     url: "https://example.com", // TODO
     thumb: "thumb-b"
   },
   {
     company: "Northline Gym",
-    goal: "Landing page built to convert memberships.",
+    goal: "Conversion-led landing that sells memberships before the tour.",
     level: "legendary",
-    tags: ["Landing", "CTA", "Performance"],
+    tags: ["Conversion", "CTA", "Performance"],
     url: "https://example.com", // TODO
     thumb: "thumb-a"
   },
   {
     company: "Luma Real Estate",
-    goal: "Company website with premium sections and clarity.",
+    goal: "Premium real estate presence with clear paths to contact.",
     level: "excellent",
-    tags: ["Business", "UI", "Trust"],
+    tags: ["Trust", "Premium", "UI"],
     url: "https://example.com", // TODO
     thumb: "thumb-c"
   }
