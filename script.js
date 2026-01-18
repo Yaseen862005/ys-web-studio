@@ -685,6 +685,7 @@ function showToast(message, type = "success") {
 const directChips = document.querySelectorAll(".direct-chip.allow-select");
 const chipTimers = new WeakMap();
 const reduceMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 const prefersReducedMotion = () => Boolean(reduceMotionQuery?.matches);
 
@@ -820,6 +821,7 @@ const clearChipTimer = (chip) => {
 };
 
 const showHintState = (chip) => {
+  if (!canHover) return;
   if (chip.classList.contains("is-copied")) return;
   setOverlayText(chip, "Click to copy");
   chip.classList.add("is-hint");
@@ -857,7 +859,7 @@ const triggerCopyFeedback = async (chip) => {
   const t = setTimeout(() => {
     clearCopiedState(chip);
     chipTimers.delete(chip);
-    if (chip.matches(":hover")) {
+    if (canHover && chip.matches(":hover")) {
       showHintState(chip);
     }
   }, 1500);
