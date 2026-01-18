@@ -1178,6 +1178,24 @@ input::placeholder{color: rgba(234,240,255,.55)}
     scroll-margin-top: 76px;
   }
 }
+/* Mobile refinements for floating WhatsApp button */
+@media (max-width: 520px){
+  .wa-float{
+    right: 12px;
+    bottom: 12px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-weight: 800;
+    border-width: 1px;
+    backdrop-filter: blur(8px);
+  }
+}
+@media (max-width: 360px){
+  .wa-float{
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
 /* Cards text tuning */
 .work-title{font-size: 17px}
 .work-goal{font-size: 14px; line-height: 1.65}
@@ -1250,6 +1268,7 @@ body{
   isolation: isolate;
   overflow: hidden;
   transform-style: preserve-3d;
+  will-change: transform;
   --tiltX: 0deg;
   --tiltY: 0deg;
   --glowX: 50%;
@@ -1296,6 +1315,7 @@ body{
     drop-shadow(0 0 35px rgba(124, 58, 237, 0.22));
   animation: blobFloat 6.2s ease-in-out infinite, blobGlow 4.4s ease-in-out infinite;
   transform: translateZ(0) rotateX(var(--tiltY)) rotateY(var(--tiltX));
+  will-change: transform, filter;
 }
 
 .blob-path {
@@ -1354,6 +1374,18 @@ body{
   filter: blur(.2px);
   animation: blobGlare 9s ease-in-out infinite;
   animation-delay: -2.1s;
+}
+
+/* iOS Safari: SMIL drives morph, keep other blob motion */
+.ios .blob-fill{
+  animation: none;
+}
+
+.ios .blob-ring{
+  animation:
+    ringFlow 8s linear infinite,
+    ringBreathe 4s ease-in-out infinite,
+    ringDash 8s ease-in-out infinite;
 }
 
 @keyframes blobStroke{
@@ -1444,6 +1476,7 @@ body{
   filter: blur(1px);
   opacity:.35;
   animation: bubbleRise 6.5s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 .liquid-bubbles span:nth-child(1){ left:28%; bottom:18%; animation-delay:0s; transform: scale(1.0); }
 .liquid-bubbles span:nth-child(2){ left:56%; bottom:14%; animation-delay:-2.2s; transform: scale(1.25); }
@@ -1477,7 +1510,7 @@ body{
   }
 }
 
-/* ===== Premium 3s Loader ===== */
+/* ===== Premium 1.3s Loader ===== */
 body.is-loading { overflow: hidden; }
 
 .site-loader{
@@ -1491,7 +1524,7 @@ body.is-loading { overflow: hidden; }
   -webkit-backdrop-filter: blur(14px);
   opacity: 1;
   pointer-events: all;
-  transition: opacity 420ms ease, visibility 420ms ease;
+  transition: opacity 300ms ease, visibility 300ms ease;
 }
 
 .site-loader-inner{
