@@ -4,16 +4,76 @@
   <!-- =========================
     YS Web Studio - Single Page Portfolio
     File: index.html
-    Author: You 🙂
+    Author: You ??
   ========================== -->
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YS Web Studio — Premium Websites</title>
+  <title>YS Web Studio - Premium Web Design & Conversion-Focused Development</title>
 
   <!-- SEO basics -->
-  <meta name="description" content="YS Web Studio builds premium, fast, conversion-focused websites. Explore featured projects and contact to start your next site." />
+  <meta name="description" content="YS Web Studio designs and builds premium, conversion-focused websites with elegant motion, clarity, and performance." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://yswebstudio.com/" />
   <meta name="theme-color" content="#070A12" />
+
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0b0f1a" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="YS Web Studio" />
+  <meta property="og:title" content="YS Web Studio - Premium Web Design & Development" />
+  <meta property="og:description" content="Premium websites built with clarity, motion, and conversion in mind. Tailored for brands that care about quality." />
+  <meta property="og:url" content="https://yswebstudio.com/" />
+  <!--
+  OG Image:
+  Place the file "og-cover.jpg" in the project root.
+  Recommended size: 1200x630.
+  This image is used for WhatsApp, Twitter, LinkedIn previews.
+  -->
+  <meta property="og:image" content="https://yswebstudio.com/og-cover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="YS Web Studio - Premium Web Design & Conversion-Focused Development" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="YS Web Studio - Premium Web Design & Development" />
+  <meta name="twitter:description" content="Elegant, conversion-focused websites crafted with performance and clarity." />
+  <meta name="twitter:image" content="https://yswebstudio.com/og-cover.jpg" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "YS Web Studio",
+      "url": "https://yswebstudio.com/",
+      "logo": "https://yswebstudio.com/logo.png",
+      "description": "Premium web design and development studio focused on clarity, motion, and conversion.",
+      "founder": {
+        "@type": "Person",
+        "name": "Yaseen"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "JO"
+      },
+      "sameAs": [
+        "https://www.instagram.com/",
+        "https://www.linkedin.com/"
+      ]
+    }
+  </script>
 
   <!-- Premium fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +83,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="is-loading">
+  <div class="site-loader" id="siteLoader" aria-hidden="false">
+    <div class="site-loader-inner" role="status" aria-live="polite" aria-label="Loading">
+      <div class="site-loader-brand">YS WEB STUDIO</div>
+      <div class="site-loader-sub">Loading</div>
+      <div class="site-loader-bar" aria-hidden="true">
+        <span></span>
+      </div>
+    </div>
+  </div>
   <!-- =========================
     BACKGROUND (glow + grid)
     - Purely visual layer, fixed behind everything
@@ -115,7 +184,7 @@
               <div class="kpi-label">avg. speed & clarity uplift</div>
             </div>
             <div class="trust-item">
-              <div class="kpi">3–10 days</div>
+              <div class="kpi">3-10 days</div>
               <div class="kpi-label">typical delivery</div>
             </div>
             <div class="trust-item">
@@ -127,28 +196,48 @@
 
         <div class="hero-right">
           <!-- Animated morphing shapes blob - represents adaptability -->
-          <div class="glass-card reveal">
-            <div class="blob-container">
-              <svg class="blob-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <div class="blob-container" aria-hidden="true">
+              <div class="liquid-bubbles">
+                <span></span><span></span><span></span>
+              </div>
+              <svg class="blob-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
                   <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color: #7C3AED; stop-opacity: 1" />
-                    <stop offset="50%" style="stop-color: #06B6D4; stop-opacity: 1" />
-                    <stop offset="100%" style="stop-color: #22C55E; stop-opacity: 1" />
+                    <stop offset="0%" stop-color="#7C3AED" />
+                    <stop offset="50%" stop-color="#06B6D4" />
+                    <stop offset="100%" stop-color="#22C55E" />
                   </linearGradient>
+                  <linearGradient id="blobSheen" x1="30%" y1="0%" x2="80%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.65)" />
+                    <stop offset="35%" stop-color="rgba(255,255,255,0.08)" />
+                    <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+                  </linearGradient>
+                  <filter id="blobDistort" x="-25%" y="-25%" width="150%" height="150%" filterUnits="userSpaceOnUse">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="3" result="noise">
+                      <animate attributeName="baseFrequency" dur="18s" values="0.009 0.013;0.010 0.012;0.0095 0.014;0.009 0.013" repeatCount="indefinite" />
+                    </feTurbulence>
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G">
+                      <animate attributeName="scale" dur="14s" values="9;12;10;11;9" repeatCount="indefinite" />
+                    </feDisplacementMap>
+                    <feGaussianBlur stdDeviation="0.35" />
+                  </filter>
                 </defs>
-                <path class="blob-path" d="M150 40 C210.75 40 260 89.25 260 150 C260 210.75 210.75 260 150 260 C89.25 260 40 210.75 40 150 C40 89.25 89.25 40 150 40 Z" fill="url(#blobGradient)" />
+                <g filter="url(#blobDistort)">
+                  <path class="blob-path blob-ring" d="M150 40 C210.75 40 260 89.25 260 150 C260 210.75 210.75 260 150 260 C89.25 260 40 210.75 40 150 C40 89.25 89.25 40 150 40 Z" />
+                  <path class="blob-path blob-fill" d="M150 40 C210.75 40 260 89.25 260 150 C260 210.75 210.75 260 150 260 C89.25 260 40 210.75 40 150 C40 89.25 89.25 40 150 40 Z" fill="url(#blobGradient)" />
+                  <path class="blob-path blob-outline" d="M150 40 C210.75 40 260 89.25 260 150 C260 210.75 210.75 260 150 260 C89.25 260 40 210.75 40 150 C40 89.25 89.25 40 150 40 Z" />
+                  <path class="blob-path blob-glare" d="M150 40 C210.75 40 260 89.25 260 150 C260 210.75 210.75 260 150 260 C89.25 260 40 210.75 40 150 C40 89.25 89.25 40 150 40 Z" />
+                </g>
               </svg>
             </div>
-          </div>
 
-          <div class="floating-note reveal">
+            <div class="floating-note reveal">
             <div class="note-title">What you get</div>
-            <div class="note-list">
-              <span>• Sites shaped exactly to what you imagined</span>
-              <span>• I turn “impossible” into possible—fluid like water</span>
-              <span>• Any style or palette—always responsive, clean, fast</span>
-            </div>
+            <ul class="note-list">
+              <li>Sites shaped exactly to what you imagined</li>
+              <li>I turn "impossible" into possible - fluid like water</li>
+              <li>Any style or palette - always responsive, clean, fast</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -179,7 +268,7 @@
         <div class="work-grid" id="workGrid" aria-live="polite"></div>
 
         <div class="work-note reveal">
-          Ready for something tailored? I’ll shape it to your brand and deliver quickly.
+          Ready for something tailored? I'll shape it to your brand and deliver quickly.
         </div>
       </div>
     </section>
@@ -205,7 +294,7 @@
           <article class="step reveal">
             <div class="step-num">02</div>
             <h3>Design</h3>
-            <p>Any aesthetic you want—light, dark, minimal, bold—with typography and components tuned to your brand.</p>
+            <p>Any aesthetic you want - light, dark, minimal, bold - with typography and components tuned to your brand.</p>
           </article>
 
           <article class="step reveal">
@@ -373,17 +462,46 @@
     ========================== -->
     <section class="section contact" id="contact">
       <div class="container contact-card reveal">
-        <h2>Let’s build your website.</h2>
-        <p>Send details. I’ll reply with a plan + timeline.</p>
-        <div class="contact-guarantee">Zero-risk, clear results: fixed scope, clear timeline. If anything feels off, I fix it—no friction.</div>
+        <h2>Let's build your website.</h2>
+        <p>Send details. I'll reply with a plan + timeline.</p>
+        <div class="contact-guarantee">Zero-risk, clear results: fixed scope, clear timeline. If anything feels off, I fix it - no friction.</div>
 
         <!-- Email form (mailto) -->
         <!-- NOTE: This is client-side only. For real form handling, you can connect a backend later. -->
                 <form class="form" id="contactForm" novalidate>
           <!-- Basic inputs -->
-          <input id="name" type="text" placeholder="Your name" />
-          <input id="email" type="email" placeholder="Email (optional)" />
-          <input id="project" type="text" placeholder="Project type (business/portfolio/store)" />
+          <div class="field" data-field="name">
+            <input
+              id="name"
+              type="text"
+              placeholder="Your name"
+              aria-invalid="false"
+              aria-describedby="err-name"
+            />
+            <div class="field-error" id="err-name" aria-live="polite"></div>
+          </div>
+
+          <div class="field" data-field="email">
+            <input
+              id="email"
+              type="email"
+              placeholder="Email (optional)"
+              aria-invalid="false"
+              aria-describedby="err-email"
+            />
+            <div class="field-error" id="err-email" aria-live="polite"></div>
+          </div>
+
+          <div class="field" data-field="project">
+            <input
+              id="project"
+              type="text"
+              placeholder="Project type (business/portfolio/store)"
+              aria-invalid="false"
+              aria-describedby="err-project"
+            />
+            <div class="field-error" id="err-project" aria-live="polite"></div>
+          </div>
 
           <!-- Submit -->
           <button class="btn magnetic" type="submit" id="sendBtn">Send</button>
@@ -414,6 +532,26 @@
           <input type="hidden" id="contactMethod" value="whatsapp" />
         </div>
 
+        <div class="direct-contact" aria-label="Direct contact details">
+          <span class="direct-label">Direct:</span>
+
+          <span
+            class="direct-chip allow-select"
+            tabindex="0"
+            data-copy="+962786365888"
+          >
+            WhatsApp: +962786365888
+          </span>
+
+          <span
+            class="direct-chip allow-select"
+            tabindex="0"
+            data-copy="yaseen862005@gmail.com"
+          >
+            Email: yaseen862005@gmail.com
+          </span>
+        </div>
+
         <div class="fineprint">No spam. Just clean proposals.</div>
       </div>
     </section>
@@ -421,12 +559,15 @@
     <footer class="footer">
       <div class="container foot">
         <div>© <span id="year"></span> YS Web Studio</div>
-        <div class="foot-links">
-          <a href="#work">Work</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#contact">Contact</a>
-        </div>
+      <div class="foot-links">
+        <a href="#work">Work</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
       </div>
+    </div>
+      <p class="made-with-love">
+        made with love 3&gt;
+      </p>
     </footer>
   </main>
 
@@ -444,6 +585,8 @@
 
     <!-- Toast notification (must be BEFORE script.js so JS can find it) -->
   <div id="toast" class="toast" aria-live="polite" aria-hidden="true"></div>
+
+  <div id="copyHint" class="copy-hint" aria-hidden="true"></div>
 
   <script src="script.js"></script>
 
