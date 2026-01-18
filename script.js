@@ -6,13 +6,21 @@
   - Projects list is in one place for easy editing
 ========================= */
 
+// ---------- iOS detection (for SVG morph fallback) ----------
+const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
 // ---------- Footer year ----------
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// ---------- Intro loader (3s) ----------
+// ---------- Intro loader (1s visible + 0.3s fade) ----------
 document.addEventListener("DOMContentLoaded", () => {
+  if (isiOS) {
+    document.documentElement.classList.add("ios");
+  }
+
   const loader = document.getElementById("siteLoader");
-  const HIDE_AFTER = 3000;
+  const HIDE_AFTER = 1000;
 
   window.setTimeout(() => {
     document.body.classList.add("is-loaded");
@@ -139,11 +147,44 @@ document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 ========================= */
 const blobContainerEl = document.querySelector(".blob-container");
 const blobReduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isChromeDesktop = (() => {
+  const ua = navigator.userAgent;
+  const isChromium = /Chrome|CriOS/.test(ua);
+  const isEdge = /Edg\//.test(ua);
+  const isOpera = /OPR\//.test(ua);
+  return isChromium && !isEdge && !isOpera;
+})();
 
 if (blobReduceMotion) {
   document.querySelectorAll('[filter="url(#blobDistort)"]').forEach((node) => {
     node.removeAttribute("filter");
   });
+}
+
+const softenBlobFilterForChrome = () => {
+  if (!isChromeDesktop) return;
+  const filter = document.getElementById("blobDistort");
+  if (!filter) return;
+
+  const displacement = filter.querySelector("feDisplacementMap");
+  const blur = filter.querySelector("feGaussianBlur");
+  const animateScale = displacement?.querySelector('animate[attributeName="scale"]');
+
+  if (displacement) {
+    displacement.setAttribute("scale", "7.5");
+  }
+
+  if (animateScale) {
+    animateScale.setAttribute("values", "7.5;9;8;8.5;7.5");
+  }
+
+  if (blur) {
+    blur.setAttribute("stdDeviation", "0.25");
+  }
+};
+
+if (!blobReduceMotion) {
+  softenBlobFilterForChrome();
 }
 
 if (blobContainerEl && !blobReduceMotion) {
@@ -196,63 +237,128 @@ const liquidBubblesEl = document.querySelector(".liquid-bubbles");
 const blobOutlineEl = document.querySelector(".blob-outline");
 
 if (liquidBubblesEl && blobOutlineEl && !blobReduceMotion) {
+  const bubbleEls = Array.from(liquidBubblesEl.querySelectorAll("span"));
+  const hasBubbles = bubbleEls.length > 0;
+  const outlineFrameInterval = 1000 / 30; // throttle to ~30fps
+  let outlineRafId = null;
+  let lastTime = 0;
+  let accumulator = 0;
+  let isBlobVisible = false;
+  let pendingResizeUpdate = false;
+
+  const shouldRunLoop = () => hasBubbles && isBlobVisible && document.visibilityState === "visible";
+
   const updateBlobOutlineScale = () => {
-    // Get all bubble elements
-    const bubbles = liquidBubblesEl.querySelectorAll("span");
+    if (!hasBubbles) return;
+
     let maxDistance = 0;
     const containerBounds = blobContainerEl.getBoundingClientRect();
     const containerCenterX = containerBounds.width / 2;
     const containerCenterY = containerBounds.height / 2;
-    
-    bubbles.forEach(bubble => {
+
+    bubbleEls.forEach((bubble) => {
       const bubbleBounds = bubble.getBoundingClientRect();
-      
+
       // Calculate the radius in pixels
       const bubbleRadius = bubbleBounds.width / 2;
-      
+
       // Calculate bubble center relative to container
       const bubbleCenterX = bubbleBounds.left - containerBounds.left + bubbleRadius;
       const bubbleCenterY = bubbleBounds.top - containerBounds.top + bubbleRadius;
-      
+
       // Distance from container center to bubble edge
-      const distToBubbleCenter = Math.sqrt(
-        Math.pow(bubbleCenterX - containerCenterX, 2) + 
-        Math.pow(bubbleCenterY - containerCenterY, 2)
+      const distToBubbleCenter = Math.hypot(
+        bubbleCenterX - containerCenterX,
+        bubbleCenterY - containerCenterY
       );
       const distToEdge = distToBubbleCenter + bubbleRadius;
       maxDistance = Math.max(maxDistance, distToEdge);
     });
-    
+
     // Container radius (SVG is 150 units in a 300x300 viewBox)
     const containerRadius = containerBounds.width / 2;
-    
+
     // Calculate scale needed with generous buffer for safety
     // Increased to 1.15 (15%) buffer to ensure no spillover during morphing
-    const neededScale = (maxDistance / containerRadius) * 1.15;
+    const neededScale = containerRadius ? (maxDistance / containerRadius) * 1.15 : 1;
     const constrainedScale = Math.max(1, Math.min(neededScale, 1.5));
-    
+
     // Apply transform directly to element
     blobOutlineEl.style.transform = `scale(${constrainedScale})`;
   };
-  
-  // Use RAF for smooth updates
-  let rafId = null;
-  const scheduleUpdate = () => {
-    if (rafId) return;
-    rafId = requestAnimationFrame(() => {
+
+  const stopLoop = () => {
+    if (outlineRafId) {
+      cancelAnimationFrame(outlineRafId);
+      outlineRafId = null;
+    }
+    lastTime = 0;
+    accumulator = 0;
+  };
+
+  const runLoop = (now) => {
+    if (!shouldRunLoop()) {
+      stopLoop();
+      return;
+    }
+
+    if (!lastTime) lastTime = now;
+    const delta = now - lastTime;
+    lastTime = now;
+    accumulator += delta;
+
+    if (accumulator >= outlineFrameInterval) {
       updateBlobOutlineScale();
-      rafId = null;
+      accumulator %= outlineFrameInterval;
+    }
+
+    outlineRafId = requestAnimationFrame(runLoop);
+  };
+
+  const startLoop = () => {
+    if (outlineRafId || !shouldRunLoop()) return;
+    lastTime = 0;
+    accumulator = 0;
+    outlineRafId = requestAnimationFrame(runLoop);
+  };
+
+  const scheduleResizeUpdate = () => {
+    if (pendingResizeUpdate) return;
+    pendingResizeUpdate = true;
+    requestAnimationFrame(() => {
+      pendingResizeUpdate = false;
+      if (shouldRunLoop()) {
+        updateBlobOutlineScale();
+      }
     });
   };
-  
-  // Monitor continuously at higher frequency during active animation
-  setInterval(scheduleUpdate, 16); // ~60fps
-  
-  // Also update on window resize
-  window.addEventListener("resize", scheduleUpdate);
-  
-  // Initial update
-  scheduleUpdate();
+
+  const blobVisibilityObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.target !== blobContainerEl) return;
+        isBlobVisible = entry.isIntersecting;
+        if (shouldRunLoop()) startLoop();
+        else stopLoop();
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  blobVisibilityObserver.observe(blobContainerEl);
+  document.addEventListener("visibilitychange", () => {
+    if (shouldRunLoop()) startLoop();
+    else stopLoop();
+  });
+
+  window.addEventListener("resize", scheduleResizeUpdate, { passive: true });
+
+  // Initial update + loop start if visible
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const containerRect = blobContainerEl.getBoundingClientRect();
+  isBlobVisible = containerRect.bottom > 0 && containerRect.top < viewportHeight;
+  updateBlobOutlineScale();
+  if (shouldRunLoop()) startLoop();
 }
 
 /* =========================
@@ -685,7 +791,7 @@ function showToast(message, type = "success") {
 const directChips = document.querySelectorAll(".direct-chip.allow-select");
 const chipTimers = new WeakMap();
 const reduceMotionQuery = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const canHover = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
 
 const prefersReducedMotion = () => Boolean(reduceMotionQuery?.matches);
 
@@ -844,7 +950,7 @@ const clearCopiedState = (chip) => {
   clearOverlayText(chip);
 };
 
-const triggerCopyFeedback = async (chip) => {
+const triggerCopyFeedback = async (chip, durationMs = 1500) => {
   if (!chip) return;
   clearChipTimer(chip);
 
@@ -852,17 +958,23 @@ const triggerCopyFeedback = async (chip) => {
   if (!text) return;
 
   const ok = await copyToClipboard(text);
-  if (!ok) return;
+  if (!ok) {
+    if (typeof showToast === "function") {
+      showToast("Copy failed", "info");
+    }
+    return;
+  }
 
   setCopiedState(chip);
 
+  const duration = typeof durationMs === "number" ? durationMs : 1500;
   const t = setTimeout(() => {
     clearCopiedState(chip);
     chipTimers.delete(chip);
     if (canHover && chip.matches(":hover")) {
       showHintState(chip);
     }
-  }, 1500);
+  }, duration);
 
   chipTimers.set(chip, t);
 };
@@ -872,24 +984,47 @@ directChips.forEach((chip) => {
   syncOverlayMetrics(chip);
   lockChipWidth(chip);
 
-  chip.addEventListener("pointerenter", (e) => {
-    if (e.pointerType && e.pointerType !== "mouse") return;
-    showHintState(chip);
-  });
+  // accessibility
+  chip.setAttribute("role", "button");
+  chip.setAttribute("tabindex", "0");
 
-  chip.addEventListener("pointerleave", () => {
-    hideHintState(chip);
-  });
+  const isDesktopHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let lastTouchTs = 0;
 
-  chip.addEventListener("pointerdown", (e) => {
+  if (isDesktopHover) {
+    chip.addEventListener("mouseenter", () => {
+      if (chip.classList.contains("is-copied")) return;
+      showHintState(chip);
+    });
+
+    chip.addEventListener("mouseleave", () => {
+      if (chip.classList.contains("is-copied")) return;
+      hideHintState(chip);
+    });
+  } else {
+    hideHintState(chip); // hard guarantee: no hint on mobile/tablet
+  }
+
+  const runCopy = async (e, duration) => {
     e.preventDefault();
-    triggerCopyFeedback(chip);
+    e.stopPropagation();
+    await triggerCopyFeedback(chip, duration);
+  };
+
+  chip.addEventListener("touchend", (e) => {
+    lastTouchTs = Date.now();
+    runCopy(e, 1000); // faster mobile feedback
+  }, { passive: false });
+
+  chip.addEventListener("click", (e) => {
+    if (Date.now() - lastTouchTs < 450) return;
+    runCopy(e, 1600); // desktop timing
   }, { passive: false });
 
   chip.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
     e.preventDefault();
-    triggerCopyFeedback(chip);
+    triggerCopyFeedback(chip, isDesktopHover ? 1600 : 1000);
   });
 });
 
