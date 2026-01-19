@@ -35,7 +35,6 @@ const removeBlobSmilAnimations = () => {
 const enableIosBlobSafeMode = () => {
   document.documentElement.classList.add("ios");
   stripBlobFilter();
-  removeBlobSmilAnimations();
 
   const blobContainer = document.querySelector(".blob-container");
   if (blobContainer) {
