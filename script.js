@@ -28,6 +28,10 @@ const stripBlobFilter = () => {
   });
 };
 
+const removeBlobSmilAnimations = () => {
+  document.querySelectorAll(".blob-path animate").forEach((node) => node.remove());
+};
+
 const enableIosBlobSafeMode = () => {
   document.documentElement.classList.add("ios");
   stripBlobFilter();
@@ -37,11 +41,19 @@ const enableIosBlobSafeMode = () => {
     blobContainer.classList.add("ios-blob-safe");
   }
 
-  document.querySelectorAll(".blob-path animate").forEach((node) => node.remove());
-
   document.querySelectorAll(".liquid-bubbles span").forEach((bubble) => {
-    bubble.style.animation = "none";
+    const shouldDisable = blobReduceMotion || perfLiteEnabled;
+    if (shouldDisable) {
+      bubble.style.animation = "none";
+      bubble.style.opacity = ".18";
+      bubble.style.transform = "";
+      return;
+    }
+
+    bubble.style.animationDuration = "9s";
+    bubble.style.animationTimingFunction = "ease-in-out";
     bubble.style.opacity = ".22";
+    bubble.style.filter = "none";
   });
 };
 
@@ -187,14 +199,24 @@ const blobContainerEl = document.querySelector(".blob-container");
 const blobReduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isChromeDesktop = (() => {
   const ua = navigator.userAgent;
-  const isChromium = /Chrome|CriOS/.test(ua);
+  const isChromium = /Chrome\//.test(ua);
   const isEdge = /Edg\//.test(ua);
   const isOpera = /OPR\//.test(ua);
-  return isChromium && !isEdge && !isOpera;
+  const isMobile = /Mobile|Android|CriOS/.test(ua);
+  return isChromium && !isEdge && !isOpera && !isMobile;
 })();
+
+if (isChromeDesktop) {
+  document.documentElement.classList.add("chrome");
+}
 
 if (blobReduceMotion) {
   stripBlobFilter();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", removeBlobSmilAnimations, { once: true });
+  } else {
+    removeBlobSmilAnimations();
+  }
 }
 
 const softenBlobFilterForChrome = () => {
