@@ -10,13 +10,51 @@
 const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
+// ---------- Performance helpers ----------
+const maybeEnablePerfLite = () => {
+  const mem = navigator.deviceMemory;
+  const cores = navigator.hardwareConcurrency;
+  const lowMemory = typeof mem === "number" && mem > 0 && mem <= 4;
+  const lowCores = typeof cores === "number" && cores > 0 && cores <= 4;
+
+  if (lowMemory || lowCores) {
+    document.documentElement.classList.add("perf-lite");
+  }
+};
+
+const stripBlobFilter = () => {
+  document.querySelectorAll('[filter="url(#blobDistort)"]').forEach((node) => {
+    node.removeAttribute("filter");
+  });
+};
+
+const enableIosBlobSafeMode = () => {
+  document.documentElement.classList.add("ios");
+  stripBlobFilter();
+
+  const blobContainer = document.querySelector(".blob-container");
+  if (blobContainer) {
+    blobContainer.classList.add("ios-blob-safe");
+  }
+
+  document.querySelectorAll(".blob-path animate").forEach((node) => node.remove());
+
+  document.querySelectorAll(".liquid-bubbles span").forEach((bubble) => {
+    bubble.style.animation = "none";
+    bubble.style.opacity = ".22";
+  });
+};
+
+maybeEnablePerfLite();
+const perfLiteEnabled = document.documentElement.classList.contains("perf-lite");
+
 // ---------- Footer year ----------
 document.getElementById("year").textContent = new Date().getFullYear();
 
 // ---------- Intro loader (1s visible + 0.3s fade) ----------
 document.addEventListener("DOMContentLoaded", () => {
   if (isiOS) {
-    document.documentElement.classList.add("ios");
+    enableIosBlobSafeMode();
   }
 
   const loader = document.getElementById("siteLoader");
@@ -156,13 +194,11 @@ const isChromeDesktop = (() => {
 })();
 
 if (blobReduceMotion) {
-  document.querySelectorAll('[filter="url(#blobDistort)"]').forEach((node) => {
-    node.removeAttribute("filter");
-  });
+  stripBlobFilter();
 }
 
 const softenBlobFilterForChrome = () => {
-  if (!isChromeDesktop) return;
+  if (!isChromeDesktop || isiOS) return;
   const filter = document.getElementById("blobDistort");
   if (!filter) return;
 
@@ -183,11 +219,11 @@ const softenBlobFilterForChrome = () => {
   }
 };
 
-if (!blobReduceMotion) {
+if (!blobReduceMotion && !isiOS) {
   softenBlobFilterForChrome();
 }
 
-if (blobContainerEl && !blobReduceMotion) {
+if (blobContainerEl && !blobReduceMotion && !isiOS && !perfLiteEnabled) {
   let rafId = null;
   let tiltX = 0;
   let tiltY = 0;
@@ -236,7 +272,7 @@ if (blobContainerEl && !blobReduceMotion) {
 const liquidBubblesEl = document.querySelector(".liquid-bubbles");
 const blobOutlineEl = document.querySelector(".blob-outline");
 
-if (liquidBubblesEl && blobOutlineEl && !blobReduceMotion) {
+if (liquidBubblesEl && blobOutlineEl && !blobReduceMotion && !isiOS && !perfLiteEnabled) {
   const bubbleEls = Array.from(liquidBubblesEl.querySelectorAll("span"));
   const hasBubbles = bubbleEls.length > 0;
   const outlineFrameInterval = 1000 / 30; // throttle to ~30fps
