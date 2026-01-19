@@ -85,16 +85,16 @@ h1{
 .orb{
   position:absolute;
   top:50%; left:50%;
-  filter: blur(var(--bb, 39px)); opacity: var(--bo, .44);
+  filter: blur(38px);
+  opacity: var(--bo, .44);
   width:520px; height:520px; border-radius:50%;
   background: radial-gradient(circle at 30% 30%, var(--b), transparent 60%),
               radial-gradient(circle at 70% 70%, var(--a), transparent 60%);
   --bs: 1;
   --bo: .44;
-  --bb: 39px;
   will-change: transform, opacity, offset-distance;
   offset-distance: 0%;
-  transform: translate(-50%, -50%) scale(var(--bs));
+  transform: translate3d(-50%, -50%, 0) scale(var(--bs));
 }
 .orb-b{
   background: radial-gradient(circle at 30% 30%, var(--c), transparent 60%),
@@ -102,29 +102,24 @@ h1{
 }
 @keyframes orbBreath{
   0%{
-    --bo:.44;
+    --bo:.42;
     --bs:1;
-    --bb:39px;
   }
   25%{
     --bo:.49;
     --bs:1.012;
-    --bb:38px;
   }
   50%{
     --bo:.52;
     --bs:1.02;
-    --bb:37px;
   }
   75%{
     --bo:.49;
     --bs:1.012;
-    --bb:38px;
   }
   100%{
-    --bo:.44;
+    --bo:.42;
     --bs:1;
-    --bb:39px;
   }
 }
 .orb-a{
@@ -1264,7 +1259,7 @@ body{
     inset 0 0 0 1px rgba(255,255,255,.05),
     inset 0 12px 30px rgba(255,255,255,.06),
     0 30px 80px rgba(0,0,0,.45);
-  filter: drop-shadow(0 20px 60px rgba(6,182,212,.25));
+  filter: drop-shadow(0 18px 46px rgba(6,182,212,.22));
   isolation: isolate;
   overflow: hidden;
   transform-style: preserve-3d;
@@ -1284,25 +1279,30 @@ body{
     radial-gradient(120% 120% at 22% 18%, rgba(255,255,255,.20), transparent 46%),
     radial-gradient(120% 120% at 82% 82%, rgba(6,182,212,.14), transparent 60%);
   mix-blend-mode: screen;
-  opacity:.55;
+  opacity:.48;
   filter: blur(12px);
-  animation: causticSpin 22s linear infinite;
+  animation: causticSpin 24s linear infinite;
   pointer-events:none;
+  z-index:0;
 }
 .blob-container::after{
   content:"";
   position:absolute;
-  inset:-14%;
-  background: radial-gradient(circle at 50% 50%, rgba(6,182,212,.16), rgba(124,58,237,.12), transparent 60%);
-  opacity:.55;
-  filter: blur(42px);
-  animation: boxGlow 18s ease-in-out infinite;
+  inset:12%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(124,58,237,.26), rgba(6,182,212,.16), transparent 62%);
+  opacity:.5;
+  filter: blur(34px);
+  transform: scale(1);
+  animation: blobAura 12s ease-in-out infinite;
   pointer-events:none;
+  z-index:0;
 }
 @keyframes causticSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes boxGlow{
-  0%,100%{opacity:.45; transform:scale(1);}
-  50%{opacity:.8; transform:scale(1.05);}
+@keyframes blobAura{
+  0%,100%{opacity:.42; transform:scale(1);}
+  50%{opacity:.72; transform:scale(1.05);}
 }
 
 .blob-svg {
@@ -1310,12 +1310,14 @@ body{
   height: 86%;
   max-width: none;
   max-height: none;
+  position: relative;
   filter:
-    drop-shadow(0 0 25px rgba(6, 182, 212, 0.34))
-    drop-shadow(0 0 35px rgba(124, 58, 237, 0.22));
-  animation: blobFloat 6.2s ease-in-out infinite, blobGlow 4.4s ease-in-out infinite;
+    drop-shadow(0 16px 36px rgba(6, 182, 212, 0.28))
+    drop-shadow(0 24px 46px rgba(124, 58, 237, 0.22));
+  animation: blobFloat 6.2s ease-in-out infinite;
   transform: translateZ(0) rotateX(var(--tiltY)) rotateY(var(--tiltX));
-  will-change: transform, filter;
+  will-change: transform, opacity;
+  z-index: 1;
 }
 
 .blob-path {
@@ -1332,7 +1334,7 @@ body{
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 7 10;
-  filter: blur(0.2px);
+  filter: blur(0.35px);
   opacity: .65;
   vector-effect: non-scaling-stroke;
   pointer-events: none;
@@ -1437,25 +1439,13 @@ body{
   50% { transform: translateY(-18px) rotateZ(-2deg); }
 }
 
-@keyframes blobGlow {
-  0%, 100% {
-    filter:
-      drop-shadow(0 0 20px rgba(124, 58, 237, 0.35))
-      drop-shadow(0 0 26px rgba(6, 182, 212, 0.45));
-  }
-  50% {
-    filter:
-      drop-shadow(0 0 34px rgba(6, 182, 212, 0.6))
-      drop-shadow(0 0 42px rgba(124, 58, 237, 0.4));
-  }
-}
 @keyframes ringFlow{
   from { stroke-dashoffset: 0; }
   to   { stroke-dashoffset: -34; }
 }
 @keyframes ringBreathe{
-  0%,100% { opacity: .55; filter: blur(0.6px); transform: translateY(0) scale(1); }
-  50%     { opacity: .8; filter: blur(0.12px); transform: translateY(-0.6px) scale(1.01); }
+  0%,100% { opacity: .55; transform: translateY(0) scale(1); }
+  50%     { opacity: .8; transform: translateY(-0.6px) scale(1.01); }
 }
 @keyframes ringDash{
   0%,100% { stroke-dasharray: 7 10; }
@@ -1488,16 +1478,100 @@ body{
   100%{ transform: translateY(-80px) scale(var(--s,1)); opacity:0; }
 }
 
+/* iOS Safari: keep the look, drop the heavy pipeline */
+.ios .blob-container.ios-blob-safe{
+  filter: drop-shadow(0 14px 32px rgba(6,182,212,.18));
+}
+.ios .blob-container.ios-blob-safe::before{
+  opacity:.34;
+  animation-duration: 30s;
+}
+.ios .blob-container.ios-blob-safe::after{
+  opacity:.38;
+  animation-duration: 16s;
+}
+.ios .blob-svg{
+  animation: blobFloat 9s ease-in-out infinite;
+  filter:
+    drop-shadow(0 12px 24px rgba(6, 182, 212, 0.22))
+    drop-shadow(0 18px 32px rgba(124, 58, 237, 0.18));
+}
+.ios .blob-path,
+.ios .blob-outline{
+  animation: none !important;
+}
+.ios .blob-ring{
+  animation:
+    ringFlow 10s linear infinite,
+    ringBreathe 6s ease-in-out infinite,
+    ringDash 10s ease-in-out infinite;
+}
+.ios .liquid-bubbles span{
+  animation: none !important;
+  opacity: .22;
+  transform: none !important;
+}
+
+/* Performance-lite hook */
+html.perf-lite .orb{
+  opacity: .28;
+  animation-duration: 26s, 180s;
+}
+html.perf-lite .grid{
+  opacity: .18;
+}
+html.perf-lite .blob-container::before{
+  opacity: .38;
+  animation-duration: 28s;
+}
+html.perf-lite .blob-container::after{
+  opacity: .38;
+  animation-duration: 18s;
+}
+html.perf-lite .blob-svg{
+  filter:
+    drop-shadow(0 10px 24px rgba(6, 182, 212, 0.18))
+    drop-shadow(0 16px 30px rgba(124, 58, 237, 0.16));
+}
+html.perf-lite .liquid-bubbles span{
+  animation: none;
+  opacity: .18;
+}
+html.perf-lite .nav-indicator{
+  filter: none;
+}
+
 @media (prefers-reduced-motion: reduce){
   .blob-container::before,
   .blob-container::after,
   .blob-svg,
   .blob-path,
   .blob-ring,
-  .liquid-bubbles span{
+  .blob-outline,
+  .blob-glare,
+  .liquid-bubbles span,
+  .nav-indicator::after,
+  .pulse,
+  .reveal,
+  .fade-in,
+  .fade-item,
+  .bar{
     animation: none !important;
     transform: none !important;
     transition: none !important;
+  }
+  .reveal,
+  .fade-item{
+    opacity: 1 !important;
+  }
+  .orb{
+    offset-distance: 0 !important;
+    animation: none !important;
+    opacity: .28 !important;
+    transform: translate3d(-50%, -50%, 0) scale(1) !important;
+  }
+  .grid{
+    animation: none !important;
   }
   .blob-ring{
     stroke-dashoffset: 0 !important;
