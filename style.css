@@ -100,6 +100,18 @@ h1{
   background: radial-gradient(circle at 30% 30%, var(--c), transparent 60%),
               radial-gradient(circle at 70% 70%, var(--b), transparent 60%);
 }
+.chrome .orb{
+  filter: none;
+  opacity: var(--bo, .36);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(6,182,212,.44), rgba(6,182,212,.06) 60%, transparent 80%),
+    radial-gradient(circle at 70% 70%, rgba(124,58,237,.42), rgba(124,58,237,.06) 60%, transparent 82%);
+}
+.chrome .orb-b{
+  background:
+    radial-gradient(circle at 30% 30%, rgba(34,197,94,.46), rgba(34,197,94,.08) 60%, transparent 80%),
+    radial-gradient(circle at 70% 70%, rgba(6,182,212,.44), rgba(6,182,212,.06) 60%, transparent 82%);
+}
 @keyframes orbBreath{
   0%{
     --bo:.42;
@@ -184,6 +196,13 @@ h1{
   backdrop-filter: blur(14px);
   background: rgba(7,10,18,.55);
   border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.chrome .header{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(7,10,18,.78);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 12px 32px rgba(0,0,0,.35);
 }
 .nav{
   display:flex; align-items:center; justify-content:space-between;
@@ -517,6 +536,13 @@ h1{
   border: 1px solid rgba(255,255,255,.12);
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow);
+}
+.chrome .floating-note{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(7,10,18,.80);
+  border-color: rgba(255,255,255,.16);
+  box-shadow: 0 14px 42px rgba(0,0,0,.42);
 }
 .note-title{font-weight:900; margin-bottom:10px}
 .note-list{
@@ -957,6 +983,12 @@ input::placeholder{color: rgba(234,240,255,.55)}
   white-space: nowrap;
   transition: background-color .2s ease, border-color .2s ease;
 }
+.chrome .direct-chip{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.16);
+}
 .direct-chip .chip-label,
 .direct-chip .chip-overlay{
   display: inline-block;
@@ -1066,6 +1098,13 @@ input::placeholder{color: rgba(234,240,255,.55)}
   font-weight:900;
   backdrop-filter: blur(10px);
 }
+.chrome .wa-float{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(34,197,94,.26);
+  border-color: rgba(34,197,94,.45);
+  box-shadow: 0 14px 36px rgba(0,0,0,.38);
+}
 .wa-float:hover{background: rgba(34,197,94,.25)}
 
 /* ============== Reveal animations ============== */
@@ -1125,6 +1164,12 @@ input::placeholder{color: rgba(234,240,255,.55)}
   pointer-events: none;
   transition: .35s ease;
   z-index: 999;
+}
+.chrome .toast{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(20,24,36,.94);
+  border-color: rgba(255,255,255,.16);
 }
 
 .toast.show{
@@ -1496,20 +1541,23 @@ body{
     drop-shadow(0 12px 24px rgba(6, 182, 212, 0.22))
     drop-shadow(0 18px 32px rgba(124, 58, 237, 0.18));
 }
-.ios .blob-path,
+.ios .blob-path{
+  animation: none !important;
+}
 .ios .blob-outline{
   animation: none !important;
 }
-.ios .blob-ring{
+.ios .blob-ring.blob-path{
   animation:
     ringFlow 10s linear infinite,
     ringBreathe 6s ease-in-out infinite,
-    ringDash 10s ease-in-out infinite;
+    ringDash 10s ease-in-out infinite !important;
 }
 .ios .liquid-bubbles span{
-  animation: none !important;
+  animation-duration: 9s;
+  animation-timing-function: ease-in-out;
   opacity: .22;
-  transform: none !important;
+  filter: none;
 }
 
 /* Performance-lite hook */
@@ -1600,6 +1648,11 @@ body.is-loading { overflow: hidden; }
   pointer-events: all;
   transition: opacity 300ms ease, visibility 300ms ease;
 }
+.chrome .site-loader{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(7,10,18,.96);
+}
 
 .site-loader-inner{
   text-align: center;
@@ -1652,6 +1705,8 @@ body.is-loaded .site-loader{
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* Reduced motion */
