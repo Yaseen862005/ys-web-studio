@@ -35,6 +35,7 @@ const removeBlobSmilAnimations = () => {
 const enableIosBlobSafeMode = () => {
   document.documentElement.classList.add("ios");
   stripBlobFilter();
+  removeBlobSmilAnimations();
 
   const blobContainer = document.querySelector(".blob-container");
   if (blobContainer) {
@@ -50,7 +51,7 @@ const enableIosBlobSafeMode = () => {
       return;
     }
 
-    bubble.style.animationDuration = "9s";
+    bubble.style.animationDuration = "6.5s";
     bubble.style.animationTimingFunction = "ease-in-out";
     bubble.style.opacity = ".22";
     bubble.style.filter = "none";
@@ -208,7 +209,22 @@ const isChromeDesktop = (() => {
 
 if (isChromeDesktop) {
   document.documentElement.classList.add("chrome");
+  document.documentElement.classList.add("chrome-no-blob");
+  document.documentElement.classList.add("chrome-note-right");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.documentElement.classList.contains("chrome-note-right")) return;
+  if (!window.matchMedia("(min-width: 981px)").matches) return;
+
+  const note = document.querySelector(".floating-note");
+  const heroGrid = document.querySelector(".hero-grid");
+
+  if (note && heroGrid) {
+    heroGrid.appendChild(note);
+    note.classList.add("note-chrome-right");
+  }
+});
 
 if (blobReduceMotion) {
   stripBlobFilter();
