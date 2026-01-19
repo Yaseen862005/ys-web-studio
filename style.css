@@ -75,7 +75,14 @@ h1{
 
 
 /* ============== Background layer ============== */
-.bg{position:fixed; inset:0; z-index:-1; overflow:hidden}
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  overflow:hidden;
+  contain: paint;
+  pointer-events: none;
+}
 .bg::after{
   content:"";
   position:absolute; inset:0;
@@ -106,6 +113,7 @@ h1{
   background:
     radial-gradient(circle at 30% 30%, rgba(6,182,212,.44), rgba(6,182,212,.06) 60%, transparent 80%),
     radial-gradient(circle at 70% 70%, rgba(124,58,237,.42), rgba(124,58,237,.06) 60%, transparent 82%);
+  will-change: transform, opacity;
 }
 .chrome .orb-b{
   background:
@@ -153,6 +161,39 @@ h1{
 @keyframes orbOrbit{
   from{offset-distance: 0%;}
   to{offset-distance: 100%;}
+}
+.chrome .orb-a,
+.chrome .orb-b{
+  offset-path: none;
+  offset-distance: 0%;
+}
+.chrome .orb-a{
+  animation:
+    orbBreath 18s ease-in-out infinite,
+    orbOrbitChromeA 110s linear infinite;
+  animation-delay: -5s, -30s;
+}
+.chrome .orb-b{
+  animation:
+    orbBreath 28s ease-in-out infinite,
+    orbOrbitChromeB 160s linear infinite;
+  animation-delay: -13s, -60s;
+}
+@keyframes orbOrbitChromeA{
+  0%   { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(18vw, -4vh); }
+  20%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(8vw, -16vh); }
+  40%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-16vw, -12vh); }
+  60%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-20vw, 10vh); }
+  80%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(6vw, 18vh); }
+  100% { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(18vw, -4vh); }
+}
+@keyframes orbOrbitChromeB{
+  0%   { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-14vw, 12vh); }
+  20%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-4vw, 22vh); }
+  40%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(16vw, 12vh); }
+  60%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(18vw, -8vh); }
+  80%  { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-6vw, -18vh); }
+  100% { transform: translate3d(-50%, -50%, 0) scale(var(--bs)) translate(-14vw, 12vh); }
 }
 @media (prefers-reduced-motion: reduce){
   .orb,
@@ -268,6 +309,17 @@ h1{
     transform: scaleY(1.12);
     opacity:1;
   }
+}
+.chrome .nav-indicator{
+  filter: none !important;
+  transition:
+    transform 420ms cubic-bezier(.2,.8,.2,1),
+    width 420ms cubic-bezier(.2,.8,.2,1),
+    opacity 220ms ease;
+}
+.chrome .nav-indicator::after{
+  box-shadow: 0 0 16px rgba(79,167,255,.35);
+  opacity: .95;
 }
 
 
@@ -402,7 +454,12 @@ h1{
     transition:
       transform 160ms ease,
       width 160ms ease,
-      filter 160ms ease,
+      opacity 120ms ease;
+  }
+  .chrome .nav-indicator{
+    transition:
+      transform 160ms ease,
+      width 160ms ease,
       opacity 120ms ease;
   }
   .nav-indicator::after{
@@ -509,7 +566,14 @@ h1{
   transform-origin: bottom;
   animation: rise .9s ease both;
 }
+.chrome .bar{
+  animation-name: riseChrome;
+}
 @keyframes rise{from{transform:scaleY(.2); filter: blur(1px)} to{transform:scaleY(1)}}
+@keyframes riseChrome{
+  from{transform:scaleY(.2);}
+  to{transform:scaleY(1);}
+}
 .card-bottom{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -989,6 +1053,15 @@ input::placeholder{color: rgba(234,240,255,.55)}
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.16);
 }
+.chrome .direct-chip .chip-label,
+.chrome .direct-chip .chip-overlay{
+  filter: none !important;
+  will-change: opacity, transform;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.chrome .direct-chip .chip-overlay{
+  text-shadow: 0 0 18px rgba(124,58,237,.22);
+}
 .direct-chip .chip-label,
 .direct-chip .chip-overlay{
   display: inline-block;
@@ -1123,10 +1196,19 @@ input::placeholder{color: rgba(234,240,255,.55)}
 .fade-in{
   animation: fadeUp .9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+.chrome .fade-in{
+  animation-name: fadeUpChrome;
+  animation-timing-function: cubic-bezier(0.18, 0.92, 0.18, 1);
+}
 @keyframes fadeUp{
   0%{opacity:0; transform: translateY(18px) scale(0.985); filter: blur(2px);}
   60%{opacity:1;}
   100%{opacity:1; transform: translateY(0) scale(1); filter: blur(0);}
+}
+@keyframes fadeUpChrome{
+  0%{opacity:0; transform: translateY(18px) scale(0.985);}
+  60%{opacity:1;}
+  100%{opacity:1; transform: translateY(0) scale(1);}
 }
 
 /* ============== Advanced hover motion (premium) ============== */
@@ -1396,6 +1478,13 @@ body{
     ringBreathe 4s ease-in-out infinite,
     ringDash 8s ease-in-out infinite;
 }
+.chrome .blob-ring{
+  filter: none !important;
+  animation-name: blobMorph, ringFlow, ringBreatheChrome, ringDash;
+}
+.chrome .blob-ring.blob-path{
+  animation-name: blobMorph, ringFlow, ringBreatheChrome, ringDash;
+}
 .blob-fill{
   filter: drop-shadow(0 0 22px rgba(6, 182, 212, 0.35));
   stroke: rgba(255, 255, 255, 0.08);
@@ -1421,6 +1510,31 @@ body{
   filter: blur(.2px);
   animation: blobGlare 9s ease-in-out infinite;
   animation-delay: -2.1s;
+}
+.chrome .blob-container{
+  filter: none !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    inset 0 12px 30px rgba(255,255,255,.06),
+    0 30px 80px rgba(0,0,0,.45),
+    0 22px 50px rgba(6,182,212,.18);
+}
+.chrome .blob-container::before,
+.chrome .blob-container::after{
+  filter: none !important;
+}
+.chrome .blob-container::after{
+  opacity:.54;
+}
+.chrome .blob-svg{
+  filter: none !important;
+  box-shadow:
+    0 12px 32px rgba(6,182,212,.20),
+    0 18px 42px rgba(124,58,237,.18);
+}
+.chrome .blob-glare{
+  filter: none !important;
+  opacity: .48;
 }
 
 /* iOS Safari: SMIL drives morph, keep other blob motion */
@@ -1492,6 +1606,10 @@ body{
   0%,100% { opacity: .55; transform: translateY(0) scale(1); }
   50%     { opacity: .8; transform: translateY(-0.6px) scale(1.01); }
 }
+@keyframes ringBreatheChrome{
+  0%,100% { opacity: .6; transform: translate3d(0,0,0) scale(1); }
+  50%     { opacity: .82; transform: translate3d(0, -0.6px, 0) scale(1.012); }
+}
 @keyframes ringDash{
   0%,100% { stroke-dasharray: 7 10; }
   50%     { stroke-dasharray: 8.5 12.5; }
@@ -1512,6 +1630,11 @@ body{
   opacity:.35;
   animation: bubbleRise 6.5s ease-in-out infinite;
   will-change: transform, opacity;
+}
+.chrome .liquid-bubbles span{
+  filter: none !important;
+  opacity: .28;
+  background: rgba(255,255,255,.16);
 }
 .liquid-bubbles span:nth-child(1){ left:28%; bottom:18%; animation-delay:0s; transform: scale(1.0); }
 .liquid-bubbles span:nth-child(2){ left:56%; bottom:14%; animation-delay:-2.2s; transform: scale(1.25); }
@@ -1692,6 +1815,9 @@ body.is-loading { overflow: hidden; }
   background: linear-gradient(90deg, rgba(124,58,237,.9), rgba(6,182,212,.9), rgba(34,197,94,.9));
   filter: blur(.0px);
   animation: loaderSlide 1.05s ease-in-out infinite;
+}
+.chrome .site-loader-bar span{
+  filter: none;
 }
 
 @keyframes loaderSlide{
